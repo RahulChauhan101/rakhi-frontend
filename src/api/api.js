@@ -1,5 +1,6 @@
 const BASE_URL =
-  "https://rakhi-backend-c5b4.onrender.com";
-//   http://localhost:5000/api/products
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:5000/api"
+    : "https://rakhi-backend-c5b4.onrender.com/api";
 
 export default BASE_URL;

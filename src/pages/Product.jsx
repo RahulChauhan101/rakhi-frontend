@@ -24,7 +24,7 @@ function Products() {
 
       const res = await axios.get(
         // "http://localhost:5000/api/products"
-        `${BASE_URL}/api/products`
+        `${BASE_URL}/products`
       );
 
       setProducts(res.data);

@@ -3,6 +3,7 @@ import {
   Routes,
   Route
 } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 
@@ -12,8 +13,9 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
-
 import Product from "./pages/Product";
+
+import AdminPanel from "./pages/AdminPanel";
 
 function App() {
 
@@ -21,16 +23,20 @@ function App() {
 
     <BrowserRouter>
 
-      {/* GLOBAL NAVBAR */}
       <Navbar />
 
-      <div style={{ paddingTop: "90px" }}>
+      <div style={{ paddingTop: "82px" }}>
 
         <Routes>
 
           <Route
             path="/"
             element={<Home />}
+          />
+
+          <Route
+            path="/admin"
+            element={<AdminPanel />}
           />
 
           <Route

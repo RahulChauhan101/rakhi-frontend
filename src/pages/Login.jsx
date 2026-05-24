@@ -1,22 +1,26 @@
-import { useState } from "react";
+import React, { useState } from "react";
+
 import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
+import BASE_URL from "../api/api";
+
 import "./Auth.css";
 
-function Login() {
+const Login = () => {
 
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     email: "",
-    password: ""
+    password: "",
   });
 
   const handleChange = (e) => {
 
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
 
   };
@@ -27,18 +31,30 @@ function Login() {
 
     try {
 
-      const res = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        formData
-      );
+  const res = await axios.post(
+  `${BASE_URL}/auth/login`,
+  formData
+);
 
       localStorage.setItem("token", res.data.token);
 
+      localStorage.setItem("role", res.data.role);
+
       alert(res.data.message);
 
-      console.log(res.data);
+      // Admin Login
+      if (res.data.role === "admin") {
 
-      navigate("/dashboard");
+        navigate("/admin");
+
+      }
+
+      // User Login
+      else {
+
+        navigate("/");
+
+      }
 
     } catch (error) {
 
@@ -51,6 +67,7 @@ function Login() {
   };
 
   return (
+
     <div className="auth-container">
 
       <form className="auth-form" onSubmit={handleSubmit}>
@@ -78,7 +95,9 @@ function Login() {
       </form>
 
     </div>
+
   );
-}
+
+};
 
 export default Login;

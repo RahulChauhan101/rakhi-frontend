@@ -9,9 +9,7 @@ function Home() {
 
   return (
 
-    <div style={{ paddingTop: "90px" }}>
-
-  
+    <div>
 
       <Hero />
       <Categories />
@@ -19,6 +17,7 @@ function Home() {
       <Delivery />
       <Testimonials />
       <Footer />
+
     </div>
 
   );

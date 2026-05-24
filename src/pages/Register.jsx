@@ -1,8 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
 import "./Auth.css";
+import BASE_URL from "../api/api";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
+
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -11,10 +15,12 @@ function Register() {
   });
 
   const handleChange = (e) => {
+
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
+
   };
 
   const handleSubmit = async (e) => {
@@ -24,13 +30,16 @@ function Register() {
     try {
 
       const res = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        `${BASE_URL}/auth/register`,
         formData
       );
 
       alert(res.data.message);
 
       console.log(res.data);
+
+      // MOVE TO HOME PAGE
+      navigate("/");
 
     } catch (error) {
 
@@ -43,6 +52,7 @@ function Register() {
   };
 
   return (
+
     <div className="auth-container">
 
       <form className="auth-form" onSubmit={handleSubmit}>
@@ -77,7 +87,9 @@ function Register() {
       </form>
 
     </div>
+
   );
+
 }
 
 export default Register;

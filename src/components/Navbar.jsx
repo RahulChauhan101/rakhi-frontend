@@ -1,10 +1,25 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 import { useEffect, useState } from "react";
+
+import {
+  Menu,
+  Search,
+  Heart,
+  ShoppingCart,
+  User,
+  Home
+} from "lucide-react";
+
 import "./Navbar.css";
 
 function Navbar() {
 
   const [cartCount, setCartCount] = useState(0);
+
+  const [search, setSearch] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
 
@@ -26,6 +41,7 @@ function Navbar() {
 
   }, []);
 
+  // UPDATE CART COUNT
   const updateCartCount = () => {
 
     const cart =
@@ -41,43 +57,147 @@ function Navbar() {
 
   };
 
+  // SEARCH PRODUCTS
+  const handleSearch = () => {
+
+    if (search.trim() !== "") {
+
+      navigate(
+        `/products?search=${search}`
+      );
+
+    }
+
+  };
+
+  // ENTER KEY SEARCH
+  const handleKeyDown = (e) => {
+
+    if (e.key === "Enter") {
+
+      handleSearch();
+
+    }
+
+  };
+
+  // MENU BUTTON
+  const handleMenu = () => {
+
+    alert("Menu Open");
+
+  };
+
   return (
 
     <nav className="navbar">
 
-      <div className="logo">
-        Rakhi
+      {/* LEFT */}
+      <div className="navbar-left">
+
+        <button
+          className="icon-btn"
+          onClick={handleMenu}
+        >
+
+          <Menu className="menu-icon" />
+
+        </button>
+
+        <div className="logo">
+          Rakhi
+        </div>
+
       </div>
 
-      <ul className="nav-links">
+      {/* CENTER */}
+      <div className="navbar-center">
 
-        <li>
-          <Link to="/">Home</Link>
-        </li>
+        <input
+          type="text"
+          placeholder="Search for products..."
+          value={search}
+          onChange={(e) =>
+            setSearch(e.target.value)
+          }
+          onKeyDown={handleKeyDown}
+        />
 
-        <li>
-          <Link to="/products">Products</Link>
-        </li>
+        <button
+          className="search-btn"
+          onClick={handleSearch}
+        >
 
-        <li className="cart-link">
+          <Search className="search-icon" />
 
-          <Link to="/cart">
+        </button>
 
-            Cart
+      </div>
 
-            <span className="cart-count">
-              {cartCount}
-            </span>
+      {/* RIGHT */}
+{/* RIGHT */}
+<div className="navbar-right">
 
-          </Link>
+  <Link
+    to="/"
+    className="nav-item"
+  >
 
-        </li>
+    <Home />
 
-        <li>
-          <Link to="/login">Login</Link>
-        </li>
+    <span>Home</span>
 
-      </ul>
+  </Link>
+
+  <Link
+    to="/products"
+    className="nav-item"
+  >
+
+    <ShoppingCart />
+
+    <span>Products</span>
+
+  </Link>
+
+  <Link
+    to="/wishlist"
+    className="nav-item"
+  >
+
+    <Heart />
+
+    <span>Wishlist</span>
+
+  </Link>
+
+  <Link
+    to="/cart"
+    className="nav-item cart-link"
+  >
+
+    <ShoppingCart />
+
+    <span>Cart</span>
+
+    <span className="cart-count">
+      {cartCount}
+    </span>
+
+  </Link>
+
+  <Link
+    to="/login"
+    className="nav-item"
+  >
+
+    <User />
+
+    <span>Login</span>
+
+  </Link>
+
+</div>
 
     </nav>
 
