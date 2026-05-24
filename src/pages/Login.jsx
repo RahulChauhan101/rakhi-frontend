@@ -1,58 +1,86 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
+
 import BASE_URL from "../api/api";
 
 import "./Auth.css";
 
-const Login = () => {
+function Login() {
 
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
+
     email: "",
-    password: "",
+    password: ""
+
   });
 
+  // HANDLE CHANGE
   const handleChange = (e) => {
 
     setFormData({
+
       ...formData,
-      [e.target.name]: e.target.value,
+
+      [e.target.name]:
+        e.target.value
+
     });
 
   };
 
+  // LOGIN
   const handleSubmit = async (e) => {
 
     e.preventDefault();
 
     try {
 
-  const res = await axios.post(
-  `${BASE_URL}/auth/login`,
-  formData
-);
+      const res =
+        await axios.post(
 
-      localStorage.setItem("token", res.data.token);
+          `${BASE_URL}/auth/login`,
 
-      localStorage.setItem("role", res.data.role);
+          formData
 
-      alert(res.data.message);
+        );
 
-      // Admin Login
-      if (res.data.role === "admin") {
+      // SAVE TOKEN
+      localStorage.setItem(
+        "token",
+        res.data.token
+      );
+
+      // SAVE ROLE
+      localStorage.setItem(
+        "role",
+        res.data.role
+      );
+
+      alert(
+        res.data.message
+      );
+
+      console.log(res.data);
+
+      // ADMIN LOGIN
+      if (
+        res.data.role ===
+        "admin"
+      ) {
 
         navigate("/admin");
 
       }
 
-      // User Login
+      // USER LOGIN
       else {
 
-        navigate("/");
+        navigate("/dashboard");
 
       }
 
@@ -60,7 +88,14 @@ const Login = () => {
 
       console.log(error);
 
-      alert(error.response.data.message);
+      alert(
+
+        error.response?.data
+          ?.message ||
+
+        "Login Failed"
+
+      );
 
     }
 
@@ -70,26 +105,39 @@ const Login = () => {
 
     <div className="auth-container">
 
-      <form className="auth-form" onSubmit={handleSubmit}>
+      <form
+        className="auth-form"
+        onSubmit={handleSubmit}
+      >
 
-        <h1>Login</h1>
+        <h1>
+          Login
+        </h1>
 
         <input
           type="email"
           name="email"
           placeholder="Enter Email"
+          value={formData.email}
           onChange={handleChange}
+          required
         />
 
         <input
           type="password"
           name="password"
           placeholder="Enter Password"
+          value={
+            formData.password
+          }
           onChange={handleChange}
+          required
         />
 
         <button type="submit">
+
           Login
+
         </button>
 
       </form>
@@ -98,6 +146,6 @@ const Login = () => {
 
   );
 
-};
+}
 
 export default Login;
