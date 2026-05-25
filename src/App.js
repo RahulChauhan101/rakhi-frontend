@@ -3,7 +3,7 @@ import {
   Routes,
   Route
 } from "react-router-dom";
-// import { useLocation } from "react-router-dom";
+
 
 import Navbar from "./components/Navbar";
 

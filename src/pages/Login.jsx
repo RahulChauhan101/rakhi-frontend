@@ -1,11 +1,7 @@
 import { useState } from "react";
-
 import { useNavigate } from "react-router-dom";
-
 import axios from "axios";
-
 import BASE_URL from "../api/api";
-
 import "./Auth.css";
 
 function Login() {
@@ -13,41 +9,31 @@ function Login() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-
     email: "",
     password: ""
-
   });
 
-  // HANDLE CHANGE
   const handleChange = (e) => {
 
     setFormData({
-
       ...formData,
-
-      [e.target.name]:
-        e.target.value
-
+      [e.target.name]: e.target.value
     });
 
   };
 
-  // LOGIN
   const handleSubmit = async (e) => {
 
     e.preventDefault();
 
     try {
 
-      const res =
-        await axios.post(
+      const res = await axios.post(
+        `${BASE_URL}/auth/login`,
+        formData
+      );
 
-          `${BASE_URL}/auth/login`,
-
-          formData
-
-        );
+      console.log(res.data);
 
       // SAVE TOKEN
       localStorage.setItem(
@@ -55,46 +41,33 @@ function Login() {
         res.data.token
       );
 
-      // SAVE ROLE
+      // SAVE USER
       localStorage.setItem(
-        "role",
-        res.data.role
+        "user",
+        JSON.stringify(res.data.user)
       );
 
-      alert(
-        res.data.message
-      );
+      alert(res.data.message);
 
-      console.log(res.data);
-
-      // ADMIN LOGIN
-      if (
-        res.data.role ===
-        "admin"
-      ) {
+      // NAVIGATION
+      if (res.data.user?.role === "admin") {
 
         navigate("/admin");
 
-      }
+      } else {
 
-      // USER LOGIN
-      else {
-
-        navigate("/dashboard");
+        navigate("/");
 
       }
 
     } catch (error) {
 
       console.log(error);
+      
 
       alert(
-
-        error.response?.data
-          ?.message ||
-
+        error.response?.data?.message ||
         "Login Failed"
-
       );
 
     }
@@ -110,9 +83,7 @@ function Login() {
         onSubmit={handleSubmit}
       >
 
-        <h1>
-          Login
-        </h1>
+        <h1>Login</h1>
 
         <input
           type="email"
@@ -127,17 +98,13 @@ function Login() {
           type="password"
           name="password"
           placeholder="Enter Password"
-          value={
-            formData.password
-          }
+          value={formData.password}
           onChange={handleChange}
           required
         />
 
         <button type="submit">
-
           Login
-
         </button>
 
       </form>

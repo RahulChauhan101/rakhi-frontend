@@ -1,4 +1,9 @@
-import { useEffect, useState } from "react";
+import {
+
+  useEffect,
+  useState
+
+} from "react";
 
 import axios from "axios";
 
@@ -8,84 +13,40 @@ import "./AdminPanel.css";
 
 function AdminPanel() {
 
-  const [formData, setFormData] = useState({
+  // =========================
+  // SAFE USER
+  // =========================
 
-    name: "",
-    price: "",
-    image: "",
-    description: "",
-    stock: "",
-    rating: "",
-    reviews: "",
-    category: "",
-    productType: "bestSeller"
+  const [admins, setAdmins] = useState([]);
 
-  });
+  const storedUser =
+    localStorage.getItem(
+      "user"
+    );
 
-  const [products, setProducts] = useState([]);
+  let user = {};
 
-  // FETCH PRODUCTS
-  useEffect(() => {
+  try {
 
-    fetchProducts();
+    user = storedUser
+      ? JSON.parse(
+          storedUser
+        )
+      : {};
 
-  }, []);
+  } catch (error) {
 
-  const fetchProducts = async () => {
+    user = {};
 
-    try {
+  }
 
-      const res =
-        await axios.get(
-          `${BASE_URL}/products`
-        );
+  // =========================
+  // FORM DATA
+  // =========================
 
-      setProducts(res.data);
-
-    } catch (error) {
-
-      console.log(error);
-
-    }
-
-  };
-
-  // HANDLE CHANGE
-  const handleChange = (e) => {
-
-    setFormData({
-
-      ...formData,
-
-      [e.target.name]:
-        e.target.value
-
-    });
-
-  };
-
-  // ADD PRODUCT
-  const handleSubmit = async (e) => {
-
-    e.preventDefault();
-
-    try {
-
-      const res =
-        await axios.post(
-
-          `${BASE_URL}/products/add`,
-
-          formData
-
-        );
-
-      alert(
-        res.data.message
-      );
-
-      // RESET FORM
-      setFormData({
+  const [formData,
+    setFormData] =
+      useState({
 
         name: "",
         price: "",
@@ -100,30 +61,245 @@ function AdminPanel() {
 
       });
 
-      // REFRESH PRODUCTS
-      fetchProducts();
+  // =========================
+  // IMAGE PREVIEW
+  // =========================
 
-    } catch (error) {
+  const [imagePreview,
+    setImagePreview] =
+      useState("");
 
-      console.log(error);
+  // =========================
+  // PRODUCTS
+  // =========================
 
-      alert(
-        "Error Adding Product"
-      );
+  const [products,
+    setProducts] =
+      useState([]);
 
-    }
+  // =========================
+  // FETCH PRODUCTS
+  // =========================
 
-  };
+useEffect(() => {
+
+  fetchProducts();
+
+  fetchAdmins();
+
+}, []);
+
+  const fetchProducts =
+    async () => {
+
+      try {
+
+        const res =
+          await axios.get(
+
+            `${BASE_URL}/products`
+
+          );
+
+        setProducts(
+          res.data
+        );
+
+      } catch (error) {
+
+        console.log(
+          error
+        );
+
+      }
+
+    };
+
+    const fetchAdmins = async () => {
+
+  try {
+
+    const res = await axios.get(
+      `${BASE_URL}/auth/admins`
+    );
+
+    setAdmins(res.data);
+
+  } catch (error) {
+
+    console.log(error);
+
+  }
+
+};
+
+  // =========================
+  // HANDLE INPUT
+  // =========================
+
+  const handleChange =
+    (e) => {
+
+      setFormData({
+
+        ...formData,
+
+        [e.target.name]:
+          e.target.value
+
+      });
+
+    };
+
+  // =========================
+  // IMAGE SELECT
+  // =========================
+
+  const handleImageChange =
+    (e) => {
+
+      const file =
+        e.target.files[0];
+
+      if (file) {
+
+        const imageURL =
+          URL.createObjectURL(
+            file
+          );
+
+        setFormData({
+
+          ...formData,
+
+          image: imageURL
+
+        });
+
+        setImagePreview(
+          imageURL
+        );
+
+      }
+
+    };
+
+  // =========================
+  // ADD PRODUCT
+  // =========================
+
+  const handleSubmit =
+    async (e) => {
+
+      e.preventDefault();
+
+      try {
+
+        const res =
+          await axios.post(
+
+            `${BASE_URL}/products/add`,
+
+            formData
+
+          );
+
+        alert(
+          res.data.message
+        );
+
+        // RESET
+        setFormData({
+
+          name: "",
+          price: "",
+          image: "",
+          description: "",
+          stock: "",
+          rating: "",
+          reviews: "",
+          category: "",
+          productType:
+            "bestSeller"
+
+        });
+
+        setImagePreview("");
+
+        // REFRESH
+        fetchProducts();
+
+      } catch (error) {
+
+        console.log(error);
+
+        alert(
+          "Error Adding Product"
+        );
+
+      }
+
+    };
 
   return (
 
     <div className="admin-page">
 
+      <div className="all-admins">
+
+  <h3>All Admins</h3>
+
+  {
+    admins.map((admin) => (
+
+<div
+  key={admin._id}
+className={`admin-user ${
+  admin.isActive
+    ? "active"
+    : ""
+}`}
+>
+        <h4>{admin.name}</h4>
+
+        <p>{admin.email}</p>
+
+      </div>
+
+    ))
+  }
+
+</div>
+
+      {/* LEFT SIDE */}
+
       <div className="admin-container">
+
+        {/* ADMIN INFO */}
+
+        <div className="admin-top">
+
+          <div>
+
+            <h2>
+              {user?.name || "Admin"}
+            </h2>
+
+            <p>
+              Welcome Back 👋
+            </p>
+
+          </div>
+
+        </div>
+
+        {/* TITLE */}
 
         <h1 className="admin-title">
           Add Product
         </h1>
+
+        {/* FORM */}
 
         <form
           className="admin-form"
@@ -149,13 +325,25 @@ function AdminPanel() {
           />
 
           <input
-            type="text"
-            name="image"
-            placeholder="Image URL"
-            value={formData.image}
-            onChange={handleChange}
+            type="file"
+            accept="image/*"
+            onChange={
+              handleImageChange
+            }
             required
           />
+
+          {
+            imagePreview && (
+
+              <img
+                src={imagePreview}
+                alt="Preview"
+                className="preview-image"
+              />
+
+            )
+          }
 
           <textarea
             name="description"
@@ -205,8 +393,6 @@ function AdminPanel() {
             required
           />
 
-          {/* PRODUCT TYPE */}
-
           <select
             name="productType"
             value={
@@ -233,92 +419,35 @@ function AdminPanel() {
             type="submit"
             className="admin-btn"
           >
+
             Add Product
+
           </button>
 
         </form>
 
       </div>
 
-      {/* ================= PRODUCTS ================= */}
+      {/* RIGHT SIDE */}
 
-      <div
-        style={{
-          width: "100%",
-          marginTop: "40px"
-        }}
-      >
+      <div className="products-section">
 
-        <h1
-          style={{
-            textAlign: "center",
-            marginBottom: "30px"
-          }}
-        >
+        <h1 className="products-title">
           All Products
         </h1>
 
-        <div
-          style={{
-            display: "flex",
-            gap: "20px",
-            flexWrap: "wrap",
-            justifyContent: "center"
-          }}
-        >
+        <div className="products-grid">
 
           {
             products.map((product) => (
 
               <div
+                className="product-card"
                 key={product._id}
-                style={{
-                  width: "280px",
-                  background: "white",
-                  borderRadius: "12px",
-                  overflow: "hidden",
-                  boxShadow:
-                    "0 0 10px rgba(0,0,0,0.1)",
-                  position: "relative"
-                }}
               >
 
-                {/* PRODUCT TYPE */}
-
                 <div
-                  style={{
-
-                    position: "absolute",
-
-                    top: "15px",
-
-                    left: "15px",
-
-                    background:
-
-                      product.productType ===
-                      "bestSeller"
-
-                        ? "#ff9800"
-
-                        : product.productType ===
-                          "new"
-
-                        ? "#4caf50"
-
-                        : "#2196f3",
-
-                    color: "white",
-
-                    padding: "5px 12px",
-
-                    borderRadius: "20px",
-
-                    fontSize: "12px",
-
-                    fontWeight: "bold"
-
-                  }}
+                  className={`product-badge ${product.productType}`}
                 >
 
                   {
@@ -337,25 +466,12 @@ function AdminPanel() {
 
                 </div>
 
-                {/* IMAGE */}
-
                 <img
                   src={product.image}
                   alt={product.name}
-                  style={{
-                    width: "100%",
-                    height: "230px",
-                    objectFit: "cover"
-                  }}
                 />
 
-                {/* DETAILS */}
-
-                <div
-                  style={{
-                    padding: "15px"
-                  }}
-                >
+                <div className="product-details">
 
                   <h2>
                     {product.name}
