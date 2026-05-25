@@ -3,74 +3,124 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import {
+
   Menu,
   Search,
   Heart,
   ShoppingCart,
   User,
   Home
+
 } from "lucide-react";
 
 import "./Navbar.css";
 
 function Navbar() {
 
-  const [cartCount, setCartCount] = useState(0);
+  // =========================
+  // STATES
+  // =========================
 
-  const [search, setSearch] = useState("");
+  const [cartCount, setCartCount] =
+    useState(0);
+
+  const [search, setSearch] =
+    useState("");
+
+  const [user, setUser] =
+    useState(null);
 
   const navigate = useNavigate();
+
+  // =========================
+  // USE EFFECT
+  // =========================
 
   useEffect(() => {
 
     updateCartCount();
 
+    // GET USER
+    const storedUser =
+      JSON.parse(
+        localStorage.getItem("user")
+      );
+
+    setUser(storedUser);
+
+    // CART EVENT
     window.addEventListener(
+
       "cartUpdated",
+
       updateCartCount
+
     );
 
     return () => {
 
       window.removeEventListener(
+
         "cartUpdated",
+
         updateCartCount
+
       );
 
     };
 
   }, []);
 
+  // =========================
   // UPDATE CART COUNT
+  // =========================
+
   const updateCartCount = () => {
 
     const cart =
-      JSON.parse(localStorage.getItem("cart")) || [];
 
-    const totalQuantity = cart.reduce(
-      (total, item) =>
-        total + item.quantity,
-      0
-    );
+      JSON.parse(
+        localStorage.getItem("cart")
+      ) || [];
+
+    const totalQuantity =
+
+      cart.reduce(
+
+        (total, item) =>
+
+          total + item.quantity,
+
+        0
+
+      );
 
     setCartCount(totalQuantity);
 
   };
 
+  // =========================
   // SEARCH PRODUCTS
+  // =========================
+
   const handleSearch = () => {
 
     if (search.trim() !== "") {
 
       navigate(
+
         `/products?search=${search}`
+
       );
 
     }
 
   };
 
-  // ENTER KEY SEARCH
+  // =========================
+  // ENTER SEARCH
+  // =========================
+
   const handleKeyDown = (e) => {
 
     if (e.key === "Enter") {
@@ -81,7 +131,10 @@ function Navbar() {
 
   };
 
-  // MENU BUTTON
+  // =========================
+  // MENU
+  // =========================
+
   const handleMenu = () => {
 
     alert("Menu Open");
@@ -92,12 +145,18 @@ function Navbar() {
 
     <nav className="navbar">
 
-      {/* LEFT */}
+      {/* =========================
+          LEFT
+      ========================= */}
+
       <div className="navbar-left">
 
         <button
+
           className="icon-btn"
+
           onClick={handleMenu}
+
         >
 
           <Menu className="menu-icon" />
@@ -105,27 +164,43 @@ function Navbar() {
         </button>
 
         <div className="logo">
+
           Rakhi
+
         </div>
 
       </div>
 
-      {/* CENTER */}
+      {/* =========================
+          CENTER
+      ========================= */}
+
       <div className="navbar-center">
 
         <input
+
           type="text"
+
           placeholder="Search for products..."
+
           value={search}
+
           onChange={(e) =>
+
             setSearch(e.target.value)
+
           }
+
           onKeyDown={handleKeyDown}
+
         />
 
         <button
+
           className="search-btn"
+
           onClick={handleSearch}
+
         >
 
           <Search className="search-icon" />
@@ -134,70 +209,133 @@ function Navbar() {
 
       </div>
 
-      {/* RIGHT */}
-{/* RIGHT */}
-<div className="navbar-right">
+      {/* =========================
+          RIGHT
+      ========================= */}
 
-  <Link
-    to="/"
-    className="nav-item"
-  >
+      <div className="navbar-right">
 
-    <Home />
+        {/* HOME */}
 
-    <span>Home</span>
+        <Link
 
-  </Link>
+          to="/"
 
-  <Link
-    to="/products"
-    className="nav-item"
-  >
+          className="nav-item"
 
-    <ShoppingCart />
+        >
 
-    <span>Products</span>
+          <Home />
 
-  </Link>
+          <span>Home</span>
 
-  <Link
-    to="/wishlist"
-    className="nav-item"
-  >
+        </Link>
 
-    <Heart />
+        {/* PRODUCTS */}
 
-    <span>Wishlist</span>
+        <Link
 
-  </Link>
+          to="/products"
 
-  <Link
-    to="/cart"
-    className="nav-item cart-link"
-  >
+          className="nav-item"
 
-    <ShoppingCart />
+        >
 
-    <span>Cart</span>
+          <ShoppingCart />
 
-    <span className="cart-count">
-      {cartCount}
-    </span>
+          <span>Products</span>
 
-  </Link>
+        </Link>
 
-  <Link
-    to="/login"
-    className="nav-item"
-  >
+        {/* WISHLIST */}
 
-    <User />
+        <Link
 
-    <span>Login</span>
+          to="/wishlist"
 
-  </Link>
+          className="nav-item"
 
-</div>
+        >
+
+          <Heart />
+
+          <span>Wishlist</span>
+
+        </Link>
+
+        {/* CART */}
+
+        <Link
+
+          to="/cart"
+
+          className="nav-item cart-link"
+
+        >
+
+          <ShoppingCart />
+
+          <span>Cart</span>
+
+          <span className="cart-count">
+
+            {cartCount}
+
+          </span>
+
+        </Link>
+
+        {/* ADMIN */}
+
+        {
+
+          user?.role === "admin" && (
+
+            <Link
+
+              to="/admin"
+
+              className="nav-item"
+
+            >
+
+              <User />
+
+              <span>Admin</span>
+
+            </Link>
+
+          )
+
+        }
+
+        {/* LOGIN */}
+
+        <Link
+
+          to="/login"
+
+          className="nav-item"
+
+        >
+
+          <User />
+
+          <span>
+
+            {
+
+              user
+                ? user.name
+                : "Login"
+
+            }
+
+          </span>
+
+        </Link>
+
+      </div>
 
     </nav>
 
