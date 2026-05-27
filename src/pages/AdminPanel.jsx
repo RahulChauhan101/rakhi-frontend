@@ -160,23 +160,20 @@ useEffect(() => {
         e.target.files[0];
 
       if (file) {
+        const reader = new FileReader();
 
-        const imageURL =
-          URL.createObjectURL(
-            file
-          );
+        reader.onloadend = () => {
+          const imageData = reader.result;
 
-        setFormData({
+          setFormData({
+            ...formData,
+            image: imageData
+          });
 
-          ...formData,
+          setImagePreview(imageData);
+        };
 
-          image: imageURL
-
-        });
-
-        setImagePreview(
-          imageURL
-        );
+        reader.readAsDataURL(file);
 
       }
 

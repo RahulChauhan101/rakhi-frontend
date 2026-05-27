@@ -1,217 +1,104 @@
 import { useEffect, useState } from "react";
 
 function Cart() {
-
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
-
-    const items =
-      JSON.parse(localStorage.getItem("cart")) || [];
-
+    const items = JSON.parse(localStorage.getItem("cart")) || [];
     const updatedItems = items.map((item) => ({
       ...item,
-      quantity: item.quantity || 1
+      quantity: item.quantity || 1,
     }));
-
     setCartItems(updatedItems);
-
   }, []);
 
-  // INCREASE QUANTITY
+  const saveCart = (updatedCart) => {
+    setCartItems(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    window.dispatchEvent(new Event("cartUpdated"));
+  };
+
   const increaseQty = (index) => {
-
     const updatedCart = [...cartItems];
-
     updatedCart[index].quantity += 1;
-
-    setCartItems(updatedCart);
-
-    localStorage.setItem(
-      "cart",
-      JSON.stringify(updatedCart)
-    );
-
-    // NAVBAR UPDATE
-    window.dispatchEvent(
-      new Event("cartUpdated")
-    );
-
+    saveCart(updatedCart);
   };
 
-  // DECREASE QUANTITY
   const decreaseQty = (index) => {
-
     const updatedCart = [...cartItems];
-
     if (updatedCart[index].quantity > 1) {
-
       updatedCart[index].quantity -= 1;
-
+      saveCart(updatedCart);
     }
-
-    setCartItems(updatedCart);
-
-    localStorage.setItem(
-      "cart",
-      JSON.stringify(updatedCart)
-    );
-
-    // NAVBAR UPDATE
-    window.dispatchEvent(
-      new Event("cartUpdated")
-    );
-
   };
 
-  // REMOVE PRODUCT
   const removeItem = (index) => {
-
     const updatedCart = [...cartItems];
-
     updatedCart.splice(index, 1);
-
-    setCartItems(updatedCart);
-
-    localStorage.setItem(
-      "cart",
-      JSON.stringify(updatedCart)
-    );
-
-    // NAVBAR UPDATE
-    window.dispatchEvent(
-      new Event("cartUpdated")
-    );
-
+    saveCart(updatedCart);
   };
 
-  // TOTAL PRICE
   const totalPrice = cartItems.reduce(
-
-    (total, item) =>
-
-      total + item.price * item.quantity,
-
+    (total, item) => total + item.price * item.quantity,
     0
-
   );
 
   return (
+    <div className="min-h-[calc(100vh-5rem)] bg-gray-50 px-4 py-10 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-3xl">
+        <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+          Cart Page 🛒
+        </h1>
 
-    <div
-      style={{
-        padding: "50px",
-        background: "#f5f5f5",
-        minHeight: "100vh"
-      }}
-    >
-
-      <h1
-        style={{
-          marginBottom: "30px"
-        }}
-      >
-        Cart Page 🛒
-      </h1>
-
-      {
-        cartItems.length === 0 ? (
-
-          <h2>Cart Empty</h2>
-
+        {cartItems.length === 0 ? (
+          <p className="mt-6 text-gray-600">Cart is empty.</p>
         ) : (
-
           <>
-
-            {
-              cartItems.map((item, index) => (
-
+            <div className="mt-6 space-y-4">
+              {cartItems.map((item, index) => (
                 <div
                   key={index}
-                  style={{
-                    border: "1px solid #ddd",
-                    padding: "20px",
-                    marginBottom: "20px",
-                    borderRadius: "10px",
-                    background: "white"
-                  }}
+                  className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm"
                 >
+                  <h2 className="text-lg font-semibold text-gray-900">{item.name}</h2>
+                  <p className="mt-1 text-gray-700">₹{item.price}</p>
+                  <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
 
-                  <h2>{item.name}</h2>
-
-                  <h3>₹{item.price}</h3>
-
-                  <h3>
-                    Quantity: {item.quantity}
-                  </h3>
-
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: "10px",
-                      marginTop: "15px"
-                    }}
-                  >
-
+                  <div className="mt-4 flex flex-wrap gap-2">
                     <button
-                      onClick={() =>
-                        increaseQty(index)
-                      }
-                      style={{
-                        padding: "10px 15px",
-                        cursor: "pointer"
-                      }}
+                      type="button"
+                      onClick={() => increaseQty(index)}
+                      className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50"
                     >
                       +
                     </button>
-
                     <button
-                      onClick={() =>
-                        decreaseQty(index)
-                      }
-                      style={{
-                        padding: "10px 15px",
-                        cursor: "pointer"
-                      }}
+                      type="button"
+                      onClick={() => decreaseQty(index)}
+                      className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50"
                     >
                       -
                     </button>
-
                     <button
-                      onClick={() =>
-                        removeItem(index)
-                      }
-                      style={{
-                        padding: "10px 15px",
-                        background: "red",
-                        color: "white",
-                        border: "none",
-                        cursor: "pointer"
-                      }}
+                      type="button"
+                      onClick={() => removeItem(index)}
+                      className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700"
                     >
                       Remove
                     </button>
-
                   </div>
-
                 </div>
+              ))}
+            </div>
 
-              ))
-            }
-
-            <h2>
+            <h2 className="mt-6 text-xl font-bold text-gray-900">
               Total Price: ₹{totalPrice}
             </h2>
-
           </>
-
-        )
-      }
-
+        )}
+      </div>
     </div>
-
   );
-
 }
 
 export default Cart;
