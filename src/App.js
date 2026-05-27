@@ -25,7 +25,7 @@ function App() {
 
       <Navbar />
 
-      <div style={{ paddingTop: "82px" }}>
+      <div className="pt-20">
 
         <Routes>
 

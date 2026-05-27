@@ -9,8 +9,6 @@ import axios from "axios";
 
 import BASE_URL from "../api/api";
 
-import "./AdminPanel.css";
-
 function AdminPanel() {
 
   // =========================
@@ -243,21 +241,25 @@ useEffect(() => {
 
   return (
 
-    <div className="admin-page">
+    <div className="min-h-[calc(100vh-5rem)] bg-gray-50 px-4 py-8">
+      <div className="mx-auto max-w-7xl">
+        <div className="grid gap-6 lg:grid-cols-12">
 
-      <div className="all-admins">
-
-  <h3>All Admins</h3>
+          <aside className="lg:col-span-3">
+            <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+              <h3 className="text-sm font-semibold text-gray-900">
+                All Admins
+              </h3>
 
   {
     admins.map((admin) => (
 
 <div
   key={admin._id}
-className={`admin-user ${
+className={`mt-4 rounded-xl border px-4 py-3 ${
   admin.isActive
-    ? "active"
-    : ""
+    ? "border-green-200 bg-green-50"
+    : "border-gray-200 bg-white"
 }`}
 >
         <h4>{admin.name}</h4>
@@ -270,14 +272,16 @@ className={`admin-user ${
   }
 
 </div>
+          </aside>
 
       {/* LEFT SIDE */}
 
-      <div className="admin-container">
+      <main className="lg:col-span-5">
+        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
 
         {/* ADMIN INFO */}
 
-        <div className="admin-top">
+        <div className="flex items-center justify-between">
 
           <div>
 
@@ -295,14 +299,14 @@ className={`admin-user ${
 
         {/* TITLE */}
 
-        <h1 className="admin-title">
+        <h1 className="mt-6 text-xl font-bold tracking-tight text-gray-900">
           Add Product
         </h1>
 
         {/* FORM */}
 
         <form
-          className="admin-form"
+          className="mt-5 grid gap-3"
           onSubmit={handleSubmit}
         >
 
@@ -313,6 +317,7 @@ className={`admin-user ${
             value={formData.name}
             onChange={handleChange}
             required
+            className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm outline-none ring-pink-600 focus:border-pink-600 focus:ring-2"
           />
 
           <input
@@ -322,6 +327,7 @@ className={`admin-user ${
             value={formData.price}
             onChange={handleChange}
             required
+            className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm outline-none ring-pink-600 focus:border-pink-600 focus:ring-2"
           />
 
           <input
@@ -331,6 +337,7 @@ className={`admin-user ${
               handleImageChange
             }
             required
+            className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm"
           />
 
           {
@@ -339,7 +346,7 @@ className={`admin-user ${
               <img
                 src={imagePreview}
                 alt="Preview"
-                className="preview-image"
+                className="h-40 w-full rounded-xl object-cover"
               />
 
             )
@@ -353,6 +360,7 @@ className={`admin-user ${
             }
             onChange={handleChange}
             required
+            className="min-h-28 w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm outline-none ring-pink-600 focus:border-pink-600 focus:ring-2"
           />
 
           <input
@@ -362,6 +370,7 @@ className={`admin-user ${
             value={formData.stock}
             onChange={handleChange}
             required
+            className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm outline-none ring-pink-600 focus:border-pink-600 focus:ring-2"
           />
 
           <input
@@ -371,6 +380,7 @@ className={`admin-user ${
             value={formData.rating}
             onChange={handleChange}
             required
+            className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm outline-none ring-pink-600 focus:border-pink-600 focus:ring-2"
           />
 
           <input
@@ -380,6 +390,7 @@ className={`admin-user ${
             value={formData.reviews}
             onChange={handleChange}
             required
+            className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm outline-none ring-pink-600 focus:border-pink-600 focus:ring-2"
           />
 
           <input
@@ -391,6 +402,7 @@ className={`admin-user ${
             }
             onChange={handleChange}
             required
+            className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm outline-none ring-pink-600 focus:border-pink-600 focus:ring-2"
           />
 
           <select
@@ -399,6 +411,7 @@ className={`admin-user ${
               formData.productType
             }
             onChange={handleChange}
+            className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm outline-none ring-pink-600 focus:border-pink-600 focus:ring-2"
           >
 
             <option value="bestSeller">
@@ -417,7 +430,7 @@ className={`admin-user ${
 
           <button
             type="submit"
-            className="admin-btn"
+            className="mt-2 w-full rounded-xl bg-pink-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-pink-700"
           >
 
             Add Product
@@ -427,27 +440,34 @@ className={`admin-user ${
         </form>
 
       </div>
+      </main>
 
       {/* RIGHT SIDE */}
 
-      <div className="products-section">
-
-        <h1 className="products-title">
+      <section className="lg:col-span-4">
+        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+        <h1 className="text-lg font-bold tracking-tight text-gray-900">
           All Products
         </h1>
 
-        <div className="products-grid">
+        <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
 
           {
             products.map((product) => (
 
               <div
-                className="product-card"
+                className="relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-4"
                 key={product._id}
               >
 
                 <div
-                  className={`product-badge ${product.productType}`}
+                  className={`absolute left-4 top-4 rounded-full px-3 py-1 text-[11px] font-semibold ${
+                    product.productType === "bestSeller"
+                      ? "bg-pink-600 text-white"
+                      : product.productType === "new"
+                        ? "bg-blue-600 text-white"
+                        : "bg-amber-500 text-white"
+                  }`}
                 >
 
                   {
@@ -469,9 +489,10 @@ className={`admin-user ${
                 <img
                   src={product.image}
                   alt={product.name}
+                  className="h-40 w-full rounded-xl object-cover"
                 />
 
-                <div className="product-details">
+                <div className="mt-4">
 
                   <h2>
                     {product.name}
@@ -481,21 +502,21 @@ className={`admin-user ${
                     ₹{product.price}
                   </h3>
 
-                  <p>
+                  <p className="mt-2 line-clamp-3 text-sm text-gray-600">
                     {product.description}
                   </p>
 
-                  <p>
+                  <p className="mt-3 text-sm text-gray-700">
                     Stock:
                     {product.stock}
                   </p>
 
-                  <p>
+                  <p className="mt-1 text-sm text-gray-700">
                     ⭐
                     {product.rating}
                   </p>
 
-                  <p>
+                  <p className="mt-1 text-sm text-gray-700">
                     Reviews:
                     {product.reviews}
                   </p>
@@ -508,9 +529,11 @@ className={`admin-user ${
           }
 
         </div>
+        </div>
+      </section>
 
+        </div>
       </div>
-
     </div>
 
   );

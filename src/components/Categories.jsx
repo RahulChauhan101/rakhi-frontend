@@ -1,5 +1,3 @@
-import "./Categories.css";
-
 function Categories() {
 
   const categories = [
@@ -26,28 +24,36 @@ function Categories() {
 
   return (
 
-    <section className="categories-section">
+    <section className="bg-white">
+      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+        <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+          Curated For Every Bond
+        </h1>
 
-      <h1>
-        Curated For Every Bond
-      </h1>
-
-      <div className="categories-container">
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 
         {
           categories.map((item, index) => (
 
-            <div className="category-card" key={index}>
+            <div
+              className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-gray-50 shadow-sm"
+              key={index}
+            >
 
               <img
                 src={item.image}
                 alt={item.title}
+                className="h-56 w-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
 
-              <div className="overlay">
-
-                <h2>{item.title}</h2>
-
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-5">
+                <h2 className="text-lg font-semibold text-white">
+                  {item.title}
+                </h2>
+                <p className="mt-1 text-sm text-white/80">
+                  Explore gifts
+                </p>
               </div>
 
             </div>
@@ -56,7 +62,7 @@ function Categories() {
         }
 
       </div>
-
+      </div>
     </section>
 
   );

@@ -13,8 +13,6 @@ import {
 
 } from "lucide-react";
 
-import "./Navbar.css";
-
 function Navbar() {
 
   // =========================
@@ -143,45 +141,52 @@ function Navbar() {
 
   return (
 
-    <nav className="navbar">
+    <nav className="fixed inset-x-0 top-0 z-50 border-b border-gray-200 bg-white/90 backdrop-blur">
 
       {/* =========================
           LEFT
       ========================= */}
 
-      <div className="navbar-left">
+      <div className="mx-auto flex h-20 max-w-7xl items-center gap-3 px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-3">
 
         <button
 
-          className="icon-btn"
+          type="button"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-gray-700 hover:bg-gray-100 active:bg-gray-200"
 
           onClick={handleMenu}
 
         >
 
-          <Menu className="menu-icon" />
+          <Menu className="h-5 w-5" />
 
         </button>
 
-        <div className="logo">
+        <Link
+          to="/"
+          className="text-lg font-bold tracking-wide text-gray-900"
+        >
 
           Rakhi
 
-        </div>
+        </Link>
 
-      </div>
+        </div>
 
       {/* =========================
           CENTER
       ========================= */}
 
-      <div className="navbar-center">
+      <div className="hidden flex-1 px-3 md:block">
+        <div className="relative">
 
         <input
 
           type="text"
 
           placeholder="Search for products..."
+          className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2 pr-11 text-sm text-gray-900 placeholder:text-gray-400 outline-none ring-pink-600 focus:border-pink-600 focus:ring-2"
 
           value={search}
 
@@ -197,23 +202,25 @@ function Navbar() {
 
         <button
 
-          className="search-btn"
+          type="button"
+          className="absolute right-1 top-1 inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-700 hover:bg-gray-100"
 
           onClick={handleSearch}
 
         >
 
-          <Search className="search-icon" />
+          <Search className="h-4 w-4" />
 
         </button>
 
+        </div>
       </div>
 
       {/* =========================
           RIGHT
       ========================= */}
 
-      <div className="navbar-right">
+      <div className="ml-auto flex items-center gap-1 sm:gap-2">
 
         {/* HOME */}
 
@@ -221,13 +228,13 @@ function Navbar() {
 
           to="/"
 
-          className="nav-item"
+          className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
 
         >
 
-          <Home />
+          <Home className="h-5 w-5" />
 
-          <span>Home</span>
+          <span className="hidden sm:inline">Home</span>
 
         </Link>
 
@@ -237,13 +244,13 @@ function Navbar() {
 
           to="/products"
 
-          className="nav-item"
+          className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
 
         >
 
-          <ShoppingCart />
+          <ShoppingCart className="h-5 w-5" />
 
-          <span>Products</span>
+          <span className="hidden sm:inline">Products</span>
 
         </Link>
 
@@ -253,13 +260,13 @@ function Navbar() {
 
           to="/wishlist"
 
-          className="nav-item"
+          className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
 
         >
 
-          <Heart />
+          <Heart className="h-5 w-5" />
 
-          <span>Wishlist</span>
+          <span className="hidden sm:inline">Wishlist</span>
 
         </Link>
 
@@ -269,18 +276,16 @@ function Navbar() {
 
           to="/cart"
 
-          className="nav-item cart-link"
+          className="relative inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
 
         >
 
-          <ShoppingCart />
+          <ShoppingCart className="h-5 w-5" />
 
-          <span>Cart</span>
+          <span className="hidden sm:inline">Cart</span>
 
-          <span className="cart-count">
-
+          <span className="absolute -right-1 -top-1 inline-flex min-w-5 items-center justify-center rounded-full bg-pink-600 px-1.5 py-0.5 text-[11px] font-semibold leading-none text-white">
             {cartCount}
-
           </span>
 
         </Link>
@@ -295,13 +300,13 @@ function Navbar() {
 
               to="/admin"
 
-              className="nav-item"
+              className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
 
             >
 
-              <User />
+              <User className="h-5 w-5" />
 
-              <span>Admin</span>
+              <span className="hidden sm:inline">Admin</span>
 
             </Link>
 
@@ -315,13 +320,13 @@ function Navbar() {
 
           to="/login"
 
-          className="nav-item"
+          className="inline-flex items-center gap-2 rounded-lg bg-pink-600 px-3 py-2 text-sm font-semibold text-white hover:bg-pink-700"
 
         >
 
-          <User />
+          <User className="h-5 w-5" />
 
-          <span>
+          <span className="hidden sm:inline">
 
             {
 
@@ -337,6 +342,7 @@ function Navbar() {
 
       </div>
 
+      </div>
     </nav>
 
   );
