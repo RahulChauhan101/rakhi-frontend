@@ -16,6 +16,8 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Product from "./pages/Product";
 import Wishlist from "./pages/Wishlist";
+import Success from "./pages/Success";
+import Order from "./pages/Order";
 
 import AdminPanel from "./pages/AdminPanel";
 
@@ -74,6 +76,16 @@ function App() {
           <Route
             path="/wishlist"
             element={<Wishlist />}
+          />
+
+          <Route
+            path="/success"
+            element={<Success />}
+          />
+
+          <Route
+            path="/order"
+            element={<Order />}
           />
 
         </Routes>
