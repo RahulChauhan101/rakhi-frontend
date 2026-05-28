@@ -29,7 +29,11 @@ function BestSeller() {
         `${BASE_URL}/products`
       );
 
-      setProducts(res.data);
+      setProducts(
+        Array.isArray(res.data)
+          ? res.data
+          : res.data.products || []
+      );
 
     } catch (error) {
 

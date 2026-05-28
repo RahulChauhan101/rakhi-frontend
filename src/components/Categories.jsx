@@ -1,23 +1,40 @@
+import { useNavigate } from "react-router-dom";
+
 function Categories() {
+
+  const navigate = useNavigate();
 
   const categories = [
 
     {
-      title: "Brother Gifts",
+      title: "Best Seller",
       image:
-        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1170&auto=format&fit=crop"
+        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1170&auto=format&fit=crop",
+      query: "type=bestSeller"
     },
 
     {
-      title: "Beauty Collection",
+      title: "New Arrivals",
       image:
-        "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1170&auto=format&fit=crop"
+        "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1170&auto=format&fit=crop",
+      query: "type=new"
     },
 
     {
-      title: "Premium Hampers",
+      title: "Traditional",
       image:
-        "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?q=80&w=1170&auto=format&fit=crop"
+        "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?q=80&w=1170&auto=format&fit=crop",
+      query: "category=Traditional"
+    },    {
+      title: "Traditional",
+      image:
+        "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?q=80&w=1170&auto=format&fit=crop",
+      query: "category=Traditional"
+    },    {
+      title: "Traditional",
+      image:
+        "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?q=80&w=1170&auto=format&fit=crop",
+      query: "category=Traditional"
     }
 
   ];
@@ -36,7 +53,8 @@ function Categories() {
           categories.map((item, index) => (
 
             <div
-              className="group relative overflow-hidden rounded-lg sm:rounded-2xl border border-gray-200 bg-gray-50 shadow-sm"
+              onClick={() => navigate(`/products?${item.query}`)}
+              className="group relative cursor-pointer overflow-hidden rounded-lg sm:rounded-2xl border border-gray-200 bg-gray-50 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
               key={index}
             >
 
