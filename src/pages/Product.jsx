@@ -42,15 +42,15 @@ function Products() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-5rem)] bg-gray-50 px-4 py-10 sm:px-6 lg:px-8">
+    <div className="min-h-[calc(100vh-4rem)] sm:min-h-[calc(100vh-5rem)] bg-gray-50 px-3 sm:px-6 py-6 sm:py-10 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-gray-900">
           All Products
         </h1>
 
-        <div className="mt-8 flex flex-wrap gap-6">
+        <div className="mt-6 sm:mt-8 grid gap-3 sm:gap-4 lg:gap-6 grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 auto-rows-max">
           {products.map((product) => (
-            <div key={product._id} className="cursor-pointer" onClick={() => handleProductClick(product._id)}>
+            <div key={product._id} className="cursor-pointer h-full" onClick={() => handleProductClick(product._id)}>
               <ProductCard product={product} handleAddToCart={handleAddToCart} />
             </div>
           ))}

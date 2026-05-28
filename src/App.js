@@ -15,6 +15,7 @@ import Dashboard from "./pages/Dashboard";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Product from "./pages/Product";
+import Wishlist from "./pages/Wishlist";
 
 import AdminPanel from "./pages/AdminPanel";
 
@@ -26,7 +27,7 @@ function App() {
 
       <Navbar />
 
-      <div className="pt-20">
+      <div className="pt-16 sm:pt-20">
 
         <Routes>
 
@@ -68,6 +69,11 @@ function App() {
           <Route
             path="/products"
             element={<Product />}
+          />
+
+          <Route
+            path="/wishlist"
+            element={<Wishlist />}
           />
 
         </Routes>
